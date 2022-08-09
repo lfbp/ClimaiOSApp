@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class WeatherViewController: UIViewController {
     
@@ -18,12 +19,16 @@ class WeatherViewController: UIViewController {
     
     
     var weatherAPI = WeatherAPI()
+    let locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         citySearchInputField.delegate = self
         searchButton.addTarget(self, action: #selector(searchCityName), for: .touchUpInside)
         weatherAPI.delegate = self
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.requestLocation()
     }
     
     @objc func searchCityName() {
@@ -35,7 +40,7 @@ class WeatherViewController: UIViewController {
     
     private func searchFor(_ cityName: String) {
         print("Searching data for \(cityName)")
-        weatherAPI.getWeatherByCityName(cityName  )
+        weatherAPI.getWeatherData(city: cityName  )
     }
     
     private func updateUI(weatherModel: WeatherModel) {
@@ -43,6 +48,7 @@ class WeatherViewController: UIViewController {
             print("Updating UI: \(weatherModel.cityName), \(weatherModel.tempereature), \(weatherModel.conditionName)")
             self.temperatureLabel.text = String(format: "%.1f", weatherModel.tempereature)
             self.conditionImageView.image = UIImage(systemName: weatherModel.conditionName)
+            self.cityLabel.text = weatherModel.cityName
         }
     }
     private func cleanAndEndTextField() {
@@ -51,6 +57,9 @@ class WeatherViewController: UIViewController {
         citySearchInputField.placeholder = "Search"
     }
     
+    @IBAction func currentLocation(_ sender: Any) {
+        locationManager.requestLocation()
+    }
 }
 
 extension WeatherViewController: UITextFieldDelegate {
@@ -95,5 +104,21 @@ extension WeatherViewController: WeatherAPIProtocol {
         print("Response with error: \(error)")
     }
     
+}
+
+extension WeatherViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        print("Did update location")
+        if let location = locations.last {
+            let lat = location.coordinate.latitude
+            let lon = location.coordinate.longitude
+            weatherAPI.getWeatherData(latitue: lat, longitude: lon)
+            manager.stopUpdatingLocation()
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Error finding location: \(error.localizedDescription)")
+    }
 }
 

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 protocol WeatherAPIProtocol {
     func didGetResponse(with model: WeatherData)
@@ -21,18 +22,23 @@ struct WeatherAPI {
      private let baseURL = "https://api.openweathermap.org/data/2.5/weather?"
      var delegate: WeatherAPIProtocol?
     
-     func getWeatherByCityName(_ location: String) {
-        let cleanedLocation = cleanString(location)
+     func getWeatherData(city name: String) {
+        let cleanedLocation = cleanString(name)
         let url = "\(baseURL)appid=\(key)&q=\(cleanedLocation)&units=metric"
         print("Calling API: \(url)")
-        fetchCityNameData(path: url)
+        fetch(path: url)
     }
     
+    func getWeatherData(latitue: CLLocationDegrees, longitude: CLLocationDegrees) {
+       let url = "\(baseURL)appid=\(key)&units=metric&lat=\(latitue)&lon=\(longitude)"
+       print("Calling API: \(url)")
+       fetch(path: url)
+   }
     private func cleanString (_ value: String) -> String {
         return value
     }
     
-    private func fetchCityNameData(path: String) {
+    private func fetch(path: String) {
         
         if let url = URL(string:  path) {
             
