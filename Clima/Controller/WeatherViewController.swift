@@ -9,16 +9,91 @@
 import UIKit
 
 class WeatherViewController: UIViewController {
-
+    
     @IBOutlet weak var conditionImageView: UIImageView!
     @IBOutlet weak var temperatureLabel: UILabel!
     @IBOutlet weak var cityLabel: UILabel!
+    @IBOutlet weak var citySearchInputField: UITextField!
+    @IBOutlet weak var searchButton: UIButton!
+    
+    
+    var weatherAPI = WeatherAPI()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        citySearchInputField.delegate = self
+        searchButton.addTarget(self, action: #selector(searchCityName), for: .touchUpInside)
+        weatherAPI.delegate = self
     }
+    
+    @objc func searchCityName() {
+        if let locationName = citySearchInputField.text, !locationName.isEmpty {
+            searchFor(locationName)
+            cleanAndEndTextField()
+        }
+    }
+    
+    private func searchFor(_ cityName: String) {
+        print("Searching data for \(cityName)")
+        weatherAPI.getWeatherByCityName(cityName  )
+    }
+    
+    private func updateUI(weatherModel: WeatherModel) {
+        DispatchQueue.main.async {
+            print("Updating UI: \(weatherModel.cityName), \(weatherModel.tempereature), \(weatherModel.conditionName)")
+            self.temperatureLabel.text = String(format: "%.1f", weatherModel.tempereature)
+            self.conditionImageView.image = UIImage(systemName: weatherModel.conditionName)
+        }
+    }
+    private func cleanAndEndTextField() {
+        citySearchInputField.endEditing(true)
+        citySearchInputField.text = ""
+        citySearchInputField.placeholder = "Search"
+    }
+    
+}
 
+extension WeatherViewController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.endEditing(true)
+        if let locationName = textField.text {
+            if locationName.isEmpty {
+                print("Empty search string")
+                textField.placeholder = "Search a location..."
+                return false
+            } else {
+                searchFor(locationName)
+                cleanAndEndTextField()
+                return true
+            }
+        }
+        
+        return false
+    }
+}
 
+extension WeatherViewController: WeatherAPIProtocol {
+    func didGetResponse(with model: WeatherData) {
+        let model = WeatherModel(
+            conditionID: model.weather.first?.id ?? 0,
+            cityName: model.name,
+            tempereature: model.main.temp
+        )
+        updateUI(weatherModel: model)
+    }
+    
+    func didGetParsingError(with error: Error) {
+        print("Data Parsing Error: \(error.localizedDescription)")
+    }
+    
+    func urlParsingError(url: String) {
+        print("URL parsing error for url: \(url)")
+    }
+    
+    func didGetResponseError(_ error: Error) {
+        print("Response with error: \(error)")
+    }
+    
 }
 
