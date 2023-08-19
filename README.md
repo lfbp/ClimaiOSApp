@@ -1,54 +1,62 @@
 
-![App Brewery Banner](Documentation/AppBreweryBanner.png)
+# Clima App
 
-#  Clima
+  
 
-## Our Goal
+Search for the clima any where in the world!
 
-It’s time to take our app development skills to the next level. We’re going to introduce you to the wonderful world of Application Programming Interfaces (APIs) to grab live data from the internet. If you’re dreaming of making that Twitter-powered stock trading app then you’re about add some serious tools to your toolbelt!
+  
+
+## Table of Contents
+
+  
+
+- [Description](#description)
+
+- [Features](#features)
+
+- [Installation](#installation)
+
+- [Screenshots](#screenshots)
 
 
-## What you will create
+  
 
-By the end of the module, you will have made a beautiful, dark-mode enabled weather app. You'll be able to check the weather for the current location based on the GPS data from the iPhone as well as by searching for a city manually. 
+## Description
 
-## What you will learn
+  
 
-* How to create a dark-mode enabled app.
-* How to use vector images as image assets.
-* Learn to use the UITextField to get user input. 
-* Learn about the delegate pattern.
-* Swift protocols and extensions. 
-* Swift guard keyword. 
-* Swift computed properties.
-* Swift closures and completion handlers.
-* Learn to use URLSession to network and make HTTP requests.
-* Parse JSON with the native Encodable and Decodable protocols. 
-* Learn to use Grand Central Dispatch to fetch the main thread.
-* Learn to use Core Location to get the current location from the phone GPS. 
+An iOS app for searching the clima anywhere in the world. The app uses a MVC architecture and an integration with Open Weather API, which is free. 
 
-### Condition Codes
-```
-switch conditionID {
-        case 200...232:
-            return "cloud.bolt"
-        case 300...321:
-            return "cloud.drizzle"
-        case 500...531:
-            return "cloud.rain"
-        case 600...622:
-            return "cloud.snow"
-        case 701...781:
-            return "cloud.fog"
-        case 800:
-            return "sun.max"
-        case 801...804:
-            return "cloud.bolt"
-        default:
-            return "cloud"
-        }
-```
+  
 
->This is a companion project to The App Brewery's Complete App Development Bootcamp, check out the full course at [www.appbrewery.co](https://www.appbrewery.co/)
+## Features
 
-![End Banner](Documentation/readme-end-banner.png)
+  
+
+*  Search for a city name.
+*  Get an instataneous result for you a search.
+* The app tries to perform a search when opened using the device geolocation.
+* The UI changes with the weather data. Sunny icons for a sunny weather and clounds, storm and raind for a bad weather.
+* It was two vector images as background for light and dark mode.
+
+  
+
+## Installation
+
+  
+
+Download the project and run it using Xcode Simultor.
+
+ 
+
+  
+
+## Screenshots
+
+  
+![Screenshot 1](https://github.com/lfbp/ClimaiOSApp/blob/main/images/Simulator%20Screen%20Shot%20-%20iPhone%2014%20Pro%20-%202023-08-19%20at%2016.38.15.png?raw=true)
+![Screenshot 1](https://github.com/lfbp/ClimaiOSApp/blob/main/images/Simulator%20Screen%20Shot%20-%20iPhone%2014%20Pro%20-%202023-08-19%20at%2016.38.34.png?raw=true)
+![Screenshot 1](https://github.com/lfbp/ClimaiOSApp/blob/main/images/Simulator%20Screen%20Shot%20-%20iPhone%2014%20Pro%20-%202023-08-19%20at%2016.38.43.png?raw=true)
+![Screenshot 1](https://github.com/lfbp/ClimaiOSApp/blob/main/images/Simulator%20Screen%20Shot%20-%20iPhone%2014%20Pro%20-%202023-08-19%20at%2016.39.30.png?raw=true)
+
