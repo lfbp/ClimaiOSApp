@@ -46,7 +46,7 @@ An iOS app for searching the clima anywhere in the world. The app uses a MVC arc
 
   
 
-Download the project and run it using Xcode Simultor.
+Download the project and run it using Xcode Simulator.
 
  
 
